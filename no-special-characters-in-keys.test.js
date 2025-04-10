@@ -33,6 +33,8 @@ ruleTester.run("no-special-characters-in-keys", rule, {
     "t('key.with.period')",
     "t('key:with:colon')",
     "t('key@with@at')",
+    "t('chat.messages.warning')",
+    "t('chat.message.Approve delivery')",
     
     "translate('valid key')",
     "i18n('valid key')",
@@ -81,5 +83,15 @@ ruleTester.run("no-special-characters-in-keys", rule, {
       code: "i18n.t('key . with space')",
       errors: [{ messageId: "noSpecialCharacters" }],
     },
+    {
+        code: "t('Approve delivery. This is the last reminder.')",
+        errors: [{ messageId: "noSpecialCharacters" }],
+    },
+    {
+        code: "t('Approve delivery...')",
+        errors: [{ messageId: "noSpecialCharacters" }],
+    },
+   
+    
   ],
 });

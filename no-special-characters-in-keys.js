@@ -1,5 +1,5 @@
 /**
- * @fileoverview Rule to prevent special characters in i18n translation keys
+ * @fileoverview Rule to prevent trailing/leading dots or commas with whitespace in i18n translation keys
  * @author
  */
 
@@ -13,28 +13,39 @@ module.exports = {
   meta: {
     type: "problem",
     docs: {
-      description: "Disallow special characters in i18n translation keys",
+      description: "Disallow trailing/leading dots or commas with whitespace in i18n translation keys",
       category: "Best Practices",
       recommended: true,
     },
     fixable: null,
     schema: [], // no options
     messages: {
-      noSpecialCharacters: "Translation key should not contain special characters like '.', ':', '@', etc.",
+      noSpecialCharacters: "Translation key should not contain trailing/leading dots or commas with whitespace.",
     },
   },
 
   create(context) {
-    // Special characters to check for
-    const specialCharacters = /[.:@]/;
-
     /**
-     * Check if a string literal contains special characters
+     * Check if a string literal contains trailing/leading dots or commas with whitespace
      * @param {ASTNode} node - The string literal node
-     * @returns {boolean} True if the string contains special characters
+     * @returns {boolean} True if the string contains trailing/leading dots or commas with whitespace
      */
-    function hasSpecialCharacters(node) {
-      return specialCharacters.test(node.value);
+    function hasInvalidCharacters(node) {
+      const value = node.value;
+      
+      if (value.startsWith('.') || value.endsWith('.')) {
+        return true;
+      }
+      
+      if (value.startsWith(',') || value.endsWith(',')) {
+        return true;
+      }
+    
+      if (/\s+[,\.]|[,\.]\s+/.test(value)) {
+        return true;
+      }
+      
+      return false;
     }
 
     /**
@@ -71,7 +82,7 @@ module.exports = {
 
         const firstArg = node.arguments[0];
         if (firstArg && firstArg.type === "Literal" && typeof firstArg.value === "string") {
-          if (hasSpecialCharacters(firstArg)) {
+          if (hasInvalidCharacters(firstArg)) {
             context.report({
               node: firstArg,
               messageId: "noSpecialCharacters",

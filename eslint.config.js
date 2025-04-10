@@ -10,9 +10,9 @@ module.exports = [
       sourceType: "commonjs",
       ecmaVersion: "latest",
     },
-    plugins: { "i18n-rules": eslintI18n },
+    plugins: { "i18n-keys": eslintI18n },
     rules: {
-      "i18n-rules/no-special-characters-in-keys": "error",
+      "i18n-keys/no-special-characters-in-keys": "error",
     
     },
   },

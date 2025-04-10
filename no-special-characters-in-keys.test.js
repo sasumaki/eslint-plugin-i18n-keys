@@ -24,19 +24,20 @@ const ruleTester = new RuleTester({
 
 ruleTester.run("no-special-characters-in-keys", rule, {
   valid: [
-    // Simple valid cases
     "t('valid key')",
     "t('another valid key')",
     "t('key with spaces')",
     "t('key_with_underscores')",
     "t('key-with-dashes')",
     
-    // Different translation function names
+    "t('key.with.period')",
+    "t('key:with:colon')",
+    "t('key@with@at')",
+    
     "translate('valid key')",
     "i18n('valid key')",
     "i18n.t('valid key')",
     
-    // Non-string arguments should not trigger the rule
     "t(someVariable)",
     "t(123)",
     "t(true)",
@@ -46,37 +47,58 @@ ruleTester.run("no-special-characters-in-keys", rule, {
     "console.log('with.special.characters')",
   ],
   invalid: [
-    // Period in key
     {
-      code: "t('key.with.period')",
+      code: "t('.key')",
       errors: [{ messageId: "noSpecialCharacters" }],
     },
     
-    
-    // Colon in key
     {
-      code: "t('key:with:colon')",
+      code: "t('key.')",
       errors: [{ messageId: "noSpecialCharacters" }],
     },
     
-    // At symbol in key
     {
-      code: "t('key@with@at')",
+      code: "t(',key')",
       errors: [{ messageId: "noSpecialCharacters" }],
     },
     
-    // Different translation function names with special characters
     {
-      code: "translate('key.with.period')",
+      code: "t('key,')",
+      errors: [{ messageId: "noSpecialCharacters" }],
+    },
+    
+    {
+      code: "t('key , with space')",
       errors: [{ messageId: "noSpecialCharacters" }],
     },
     {
-      code: "i18n('key.with.period')",
+        code: "t('key . with space')",
+        errors: [{ messageId: "noSpecialCharacters" }],
+      },
+    {
+      code: "t('key, with space')",
       errors: [{ messageId: "noSpecialCharacters" }],
     },
     {
-      code: "i18n.t('key.with.period')",
+      code: "t('key ,with space')",
       errors: [{ messageId: "noSpecialCharacters" }],
     },
+    
+    {
+      code: "translate('.key')",
+      errors: [{ messageId: "noSpecialCharacters" }],
+    },
+    {
+      code: "i18n('key,')",
+      errors: [{ messageId: "noSpecialCharacters" }],
+    },
+    {
+      code: "i18n.t('key , with space')",
+      errors: [{ messageId: "noSpecialCharacters" }],
+    },
+    {
+        code: "i18n.t('key . with space')",
+        errors: [{ messageId: "noSpecialCharacters" }],
+      },
   ],
 });

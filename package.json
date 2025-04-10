@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-i18n-keys",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "ESLint plugin for internationalization (i18n) best practices",
   "main": "eslint-plugin-i18n-keys.js",
   "scripts": {

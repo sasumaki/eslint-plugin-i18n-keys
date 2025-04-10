@@ -42,7 +42,6 @@ ruleTester.run("no-special-characters-in-keys", rule, {
     "t(123)",
     "t(true)",
     
-    // Non-translation function calls should not trigger the rule
     "someOtherFunction('with.special.characters')",
     "console.log('with.special.characters')",
   ],
@@ -58,29 +57,15 @@ ruleTester.run("no-special-characters-in-keys", rule, {
     },
     
     {
-      code: "t(',key')",
-      errors: [{ messageId: "noSpecialCharacters" }],
-    },
-    
-    {
-      code: "t('key,')",
-      errors: [{ messageId: "noSpecialCharacters" }],
-    },
-    
-    {
-      code: "t('key , with space')",
+      code: "t('key . with space')",
       errors: [{ messageId: "noSpecialCharacters" }],
     },
     {
-        code: "t('key . with space')",
-        errors: [{ messageId: "noSpecialCharacters" }],
-      },
-    {
-      code: "t('key, with space')",
+      code: "t('key. with space')",
       errors: [{ messageId: "noSpecialCharacters" }],
     },
     {
-      code: "t('key ,with space')",
+      code: "t('key .with space')",
       errors: [{ messageId: "noSpecialCharacters" }],
     },
     
@@ -89,16 +74,12 @@ ruleTester.run("no-special-characters-in-keys", rule, {
       errors: [{ messageId: "noSpecialCharacters" }],
     },
     {
-      code: "i18n('key,')",
+      code: "i18n('key.')",
       errors: [{ messageId: "noSpecialCharacters" }],
     },
     {
-      code: "i18n.t('key , with space')",
+      code: "i18n.t('key . with space')",
       errors: [{ messageId: "noSpecialCharacters" }],
     },
-    {
-        code: "i18n.t('key . with space')",
-        errors: [{ messageId: "noSpecialCharacters" }],
-      },
   ],
 });

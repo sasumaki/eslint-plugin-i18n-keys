@@ -1,5 +1,5 @@
 /**
- * @fileoverview Rule to prevent trailing/leading dots or commas with whitespace in i18n translation keys
+ * @fileoverview Rule to prevent trailing/leading dots or dots with whitespace in i18n translation keys
  * @author
  */
 
@@ -13,35 +13,33 @@ module.exports = {
   meta: {
     type: "problem",
     docs: {
-      description: "Disallow trailing/leading dots or commas with whitespace in i18n translation keys",
+      description: "Disallow trailing/leading dots or dots with whitespace in i18n translation keys",
       category: "Best Practices",
       recommended: true,
     },
     fixable: null,
     schema: [], // no options
     messages: {
-      noSpecialCharacters: "Translation key should not contain trailing/leading dots or commas with whitespace.",
+      noSpecialCharacters: "Translation key should not contain trailing/leading dots or dots with whitespace.",
     },
   },
 
   create(context) {
     /**
-     * Check if a string literal contains trailing/leading dots or commas with whitespace
+     * Check if a string literal contains trailing/leading dots or dots with whitespace
      * @param {ASTNode} node - The string literal node
-     * @returns {boolean} True if the string contains trailing/leading dots or commas with whitespace
+     * @returns {boolean} True if the string contains trailing/leading dots or dots with whitespace
      */
     function hasInvalidCharacters(node) {
       const value = node.value;
       
+      // Check for trailing/leading dots
       if (value.startsWith('.') || value.endsWith('.')) {
         return true;
       }
       
-      if (value.startsWith(',') || value.endsWith(',')) {
-        return true;
-      }
-    
-      if (/\s+[,\.]|[,\.]\s+/.test(value)) {
+      // Check for dots with trailing/leading whitespace
+      if (/\s+\.|\.\s+/.test(value)) {
         return true;
       }
       
